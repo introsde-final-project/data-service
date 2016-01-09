@@ -21,7 +21,7 @@ import java.util.Locale;
 @Table(name="User")
 @NamedQuery(name="User.findAll", query="SELECT user FROM User user")
 //@XmlRootElement
-@XmlType(propOrder = { "uId", "firstName", "lastName", "birthDate", "bloodGroup", "address"})
+@XmlType(propOrder = { "uId", "firstName", "lastName", "birthDate", "bloodGroup", "address", "measureType"})
 @XmlAccessorType(XmlAccessType.FIELD)
 @Cacheable(false)
 public class User implements Serializable {
@@ -44,12 +44,26 @@ public class User implements Serializable {
     @Column(name = "address") // Address of the User
     private String address;
 
+    // Creating relationship with HealthProfile
+    @XmlElementWrapper(name = "currentHealth")
+    @OneToMany(mappedBy="user",cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+    private List<HealthProfile> measureType;
+    public List<HealthProfile> getMeasureType () {
+        return measureType;
+    }
+    public void setMeasureType(List<HealthProfile> measureType) {
+        this.measureType = measureType;
+    }
+
     //Creating relationship with HealthMeasureHistory
     @XmlTransient
     @OneToMany(mappedBy="user",cascade=CascadeType.ALL,fetch=FetchType.EAGER)
     private List<HealthMeasureHistory> measureHistory;
     public List<HealthMeasureHistory> getMeasureHistory() {
         return measureHistory;
+    }
+    public void setMeasureHistory(List<HealthMeasureHistory> measureHistory) {
+        this.measureHistory = measureHistory;
     }
 
     // Getters
@@ -106,6 +120,8 @@ public class User implements Serializable {
     }
 
     public static User saveUser(User user) {
+        appendHealthProfile(user);
+        appendHealthMeasureHistory(user);
         EntityManager entityManager = DataServiceDao.instance.createEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
         transaction.begin();
@@ -133,5 +149,30 @@ public class User implements Serializable {
         entityManager.remove(user);
         transaction.commit();
         DataServiceDao.instance.closeConnections(entityManager);
+    }
+
+    private static User appendHealthProfile(User user) {
+        java.util.Date date = new java.util.Date();
+        for (HealthProfile healthProfile : user.measureType) {
+            healthProfile.setUser(user);
+            healthProfile.setDateRegistered(date);
+        }
+        return user;
+    }
+
+    private static User appendHealthMeasureHistory(User user) {
+        java.util.Date date = new java.util.Date();
+        user.measureHistory = new ArrayList<HealthMeasureHistory>(user.measureType.size());
+
+        for (HealthProfile healthProfile : user.measureType) {
+            HealthMeasureHistory healthMeasureHistory = new HealthMeasureHistory();
+            healthMeasureHistory.setUser(user);
+            healthMeasureHistory.setDateRegistered(date);
+            healthMeasureHistory.setMeasureType(healthProfile.getMeasureType());
+            healthMeasureHistory.setMeasureValue(healthProfile.getMeasureValue());
+            healthMeasureHistory.setMeasureValueType(healthProfile.getMeasureValueType());
+            user.measureHistory.add(healthMeasureHistory);
+        }
+        return user;
     }
 }
