@@ -73,5 +73,16 @@ public interface Data {
     @WebResult(name="measure")
     public List<HealthMeasureHistory> readUserHistory(@WebParam(name="uId") int id, @WebParam(name="measureType") String measureType);
 
+    /* Request 7
+        Request to obtain measure details about a particular measure of a user in the list.
+        Expected Input: uId (Integer)
+                        measureType (String)
+                        hmhId (Integer)
+        Expected Output: Details of a particular measure. (String) */
+
+    @WebMethod(operationName="readUserMeasure")
+    @WebResult(name="measure")
+    public List<HealthMeasureHistory> readUserMeasure(@WebParam(name="uId") int id, @WebParam(name="measureType") String measureType, @WebParam(name="hmhId") int hmhId);
+
 
 }

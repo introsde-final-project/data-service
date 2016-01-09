@@ -125,7 +125,22 @@ public class DataImplementation implements Data {
     public List<HealthMeasureHistory> readUserHistory(int uId, String measureType) {
         List<HealthMeasureHistory> healthMeasureHistory = HealthMeasureHistory.getHealthHistoryOfUserByMeasureType(uId, measureType);
         if (healthMeasureHistory == null)
-            throw new RuntimeException("Get: Person with " + uId + " not found");
+            throw new RuntimeException("Get: User with " + uId + " not found");
+        return healthMeasureHistory;
+    }
+
+    /* Request 7
+        Request to obtain measure details about a particular measure of a user in the list.
+        Expected Input: uId (Integer)
+                        measureType (String)
+                        hmhId (Integer)
+        Expected Output: Details of a particular measure. (String) */
+
+    @Override
+    public List<HealthMeasureHistory> readUserMeasure(int uId, String measureType, int hmhId) {
+        List<HealthMeasureHistory> healthMeasureHistory = HealthMeasureHistory.getMeasurebyHmhId(uId, measureType, hmhId);
+        if (healthMeasureHistory == null)
+            throw new RuntimeException("Get: User with " + uId + " not found");
         return healthMeasureHistory;
     }
 }
