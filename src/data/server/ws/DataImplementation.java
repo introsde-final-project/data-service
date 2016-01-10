@@ -1,10 +1,12 @@
 package data.server.ws;
 
 import data.server.model.HealthMeasureHistory;
+import data.server.model.HealthProfile;
 import data.server.model.User;
 
 import javax.jws.WebService;
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -142,5 +144,101 @@ public class DataImplementation implements Data {
         if (healthMeasureHistory == null)
             throw new RuntimeException("Get: User with " + uId + " not found");
         return healthMeasureHistory;
+    }
+
+    /* Request 8
+        Request to create measure details about a measure of a user in the list.
+        Expected Input: uId (Integer)
+        measureType (String)
+        MeasureDetails (Object)
+        Expected Output:
+        List of newly created measure. (String) */
+
+    @Override
+    public HealthMeasureHistory saveUserMeasure(int uId, HealthMeasureHistory healthMeasureHistory) {
+        System.out.println("Creating new Health Measure History...");
+        User user = User.getUserById(uId);
+
+        if (user == null) {
+            System.out.println("Unable to find the user with id: " + uId);
+            return null;
+        }
+        else {
+            List<HealthProfile> healthProfiles = user.getMeasureType();
+            System.out.println(healthProfiles.size());
+            if (healthProfiles.size() == 0) {
+                System.out.println("*****************************************");
+                HealthProfile healthProfile = new HealthProfile();
+                healthProfile.setMeasureType(healthMeasureHistory.getMeasureType());
+                healthProfile.setMeasureValue(healthMeasureHistory.getMeasureValue());
+                healthProfile.setMeasureValueType(healthMeasureHistory.getMeasureValueType());
+                healthProfile.setDateRegistered(new Date());
+                healthProfile.setUser(user);
+                HealthProfile.saveHealthProfile(healthProfile);
+            }
+            else {
+                System.out.println("#############################################");
+                for (HealthProfile healthProfile : healthProfiles) {
+                    if (healthProfile.getMeasureType().equalsIgnoreCase(healthMeasureHistory.getMeasureType())) {
+                        healthProfile.setMeasureValue(healthMeasureHistory.getMeasureValue());
+                        healthProfile.setMeasureValueType(healthMeasureHistory.getMeasureValueType());
+                        healthProfile.setDateRegistered(new Date());
+                        HealthProfile.updateHealthProfile(healthProfile);
+                    }
+                }
+            }
+            healthMeasureHistory.setMeasureType(healthMeasureHistory.getMeasureType());
+            healthMeasureHistory.setMeasureValue(healthMeasureHistory.getMeasureValue());
+            healthMeasureHistory.setMeasureValueType(healthMeasureHistory.getMeasureValueType());
+            healthMeasureHistory.setDateRegistered(new Date());
+            healthMeasureHistory.setUser(user);
+            return HealthMeasureHistory.saveHealthMeasureHistory(healthMeasureHistory);
+        }
+    }
+    /* Request 9
+        Request to update measure details about a measure of a user in the list.
+        Expected Input: uId (Integer)
+        measureType (String)
+        hmhId (Integer)
+        MeasureDetails (Object)
+        Expected Output:
+        List of updated measure. (String) */
+
+    @Override
+    public HealthMeasureHistory updateUserMeasure(int uId, HealthMeasureHistory healthMeasureHistory) {
+        User existingUser = User.getUserById(uId);
+        HealthMeasureHistory existingHistory = HealthMeasureHistory.getHealthMeasureHistoryById(healthMeasureHistory.getHmhId());
+        List<HealthProfile> healthProfiles = existingUser.getMeasureType();
+
+        if (existingUser == null) {
+            System.out.println("Cannot find user with id: " + uId);
+        } else {
+            String updatedMeasureType = healthMeasureHistory.getMeasureType();
+            String updatedMeasureValue = healthMeasureHistory.getMeasureValue();
+            String updatedMeasureValueType = healthMeasureHistory.getMeasureValueType();
+            Date updatedDateRegistered = healthMeasureHistory.getDateRegistered();
+            if (updatedMeasureType != null) {
+                existingHistory.setMeasureType(updatedMeasureType);
+            }
+            if (updatedMeasureValue != null) {
+                existingHistory.setMeasureValue(updatedMeasureValue);
+            }
+            if (updatedMeasureValueType != null) {
+                existingHistory.setMeasureValueType(updatedMeasureValueType);
+            }
+            if (updatedDateRegistered != null) {
+                existingHistory.setDateRegistered(updatedDateRegistered);
+            }
+
+            for (HealthProfile healthProfile: healthProfiles) {
+                if (healthProfile.getMeasureType().equalsIgnoreCase(healthMeasureHistory.getMeasureType())) {
+                    healthProfile.setMeasureValue(healthMeasureHistory.getMeasureValue());
+                    healthProfile.setMeasureValueType(healthMeasureHistory.getMeasureValueType());
+                    healthProfile.setDateRegistered(new Date());
+                    HealthProfile.updateHealthProfile(healthProfile);
+                }
+            }
+        }
+        return HealthMeasureHistory.updateHealthMeasureHistory(existingHistory);
     }
 }

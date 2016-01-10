@@ -61,7 +61,7 @@ public interface Data {
 
     @WebMethod(operationName="deleteUser")
     @WebResult(name="user")
-    public int deleteUser(@WebParam(name="uId") int id);
+    public int deleteUser(@WebParam(name="uId") int uId);
 
     /* Request 6
        Request to obtain all measure details about a measure of a user in the list.
@@ -71,7 +71,7 @@ public interface Data {
 
     @WebMethod(operationName="readUserHistory")
     @WebResult(name="measure")
-    public List<HealthMeasureHistory> readUserHistory(@WebParam(name="uId") int id, @WebParam(name="measureType") String measureType);
+    public List<HealthMeasureHistory> readUserHistory(@WebParam(name="uId") int uId, @WebParam(name="measureType") String measureType);
 
     /* Request 7
         Request to obtain measure details about a particular measure of a user in the list.
@@ -82,7 +82,32 @@ public interface Data {
 
     @WebMethod(operationName="readUserMeasure")
     @WebResult(name="measure")
-    public List<HealthMeasureHistory> readUserMeasure(@WebParam(name="uId") int id, @WebParam(name="measureType") String measureType, @WebParam(name="hmhId") int hmhId);
+    public List<HealthMeasureHistory> readUserMeasure(@WebParam(name="uId") int uId, @WebParam(name="measureType") String measureType, @WebParam(name="hmhId") int hmhId);
 
+
+    /* Request 8
+        Request to create measure details about a measure of a user in the list.
+        Expected Input: uId (Integer)
+        measureType (String)
+        MeasureDetails (Object)
+        Expected Output:
+        List of newly created measure. (String) */
+
+    @WebMethod(operationName="saveUserMeasure")
+    @WebResult(name="measure")
+    public HealthMeasureHistory saveUserMeasure(@WebParam(name="uId") int uId, @WebParam(name="measure") HealthMeasureHistory healthMeasureHistory);
+
+     /* Request 9
+        Request to update measure details about a measure of a user in the list.
+        Expected Input: uId (Integer)
+        measureType (String)
+        hmhId (Integer)
+        MeasureDetails (Object)
+        Expected Output:
+        List of updated measure. (String) */
+
+    @WebMethod(operationName="updateUserMeasure")
+    @WebResult(name="measure")
+    public HealthMeasureHistory updateUserMeasure(@WebParam(name="uId") int uId, @WebParam(name="measure") HealthMeasureHistory healthMeasureHistory);
 
 }
