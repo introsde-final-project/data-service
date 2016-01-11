@@ -1,8 +1,6 @@
 package data.server.ws;
 
-import data.server.model.HealthMeasureHistory;
-import data.server.model.HealthProfile;
-import data.server.model.User;
+import data.server.model.*;
 
 import javax.jws.WebService;
 import java.text.ParseException;
@@ -95,7 +93,7 @@ public class DataImplementation implements Data {
             }
             User.updateUser(existing);
         }
-        System.out.println("Successfully updated personal information of user wid id: " + uId);
+        System.out.println("Successfully updated personal information of user with id: " + uId);
         return existing;
     }
 
@@ -232,13 +230,120 @@ public class DataImplementation implements Data {
 
             for (HealthProfile healthProfile: healthProfiles) {
                 if (healthProfile.getMeasureType().equalsIgnoreCase(healthMeasureHistory.getMeasureType())) {
-                    healthProfile.setMeasureValue(healthMeasureHistory.getMeasureValue());
-                    healthProfile.setMeasureValueType(healthMeasureHistory.getMeasureValueType());
-                    healthProfile.setDateRegistered(new Date());
-                    HealthProfile.updateHealthProfile(healthProfile);
+                    if (healthProfile.getDateRegistered().before(healthMeasureHistory.getDateRegistered())) {
+                        healthProfile.setMeasureValue(healthMeasureHistory.getMeasureValue());
+                        healthProfile.setMeasureValueType(healthMeasureHistory.getMeasureValueType());
+                        healthProfile.setDateRegistered(new Date());
+                        HealthProfile.updateHealthProfile(healthProfile);
+                    }
                 }
             }
         }
         return HealthMeasureHistory.updateHealthMeasureHistory(existingHistory);
+    }
+
+    /* Request 10
+        Request to delete measure details about a measure of a user in the list.
+        Expected Input: uId (Integer)
+        hmhId (Integer)
+        Expected Output: Response Message. */
+
+    @Override
+    public int deleteMeasure(int uId, int hmhId) {
+        User user = User.getUserById(uId);
+        if (user!=null) {
+            HealthMeasureHistory healthMeasureHistory = HealthMeasureHistory.getHealthMeasureHistoryById(hmhId);
+            if (healthMeasureHistory != null && healthMeasureHistory.getUser().getUId() == uId)  {
+                HealthMeasureHistory.removeHealthMeasureHistory(healthMeasureHistory);
+                System.out.println("Successfully deleted Health Measure History with id: " + hmhId );
+                return 0;
+            }
+            else {
+                System.out.println("Cannot find Health Measure History with id: " + hmhId + " for user with id: " + uId);
+                return -1;
+            }
+
+        } else {
+            System.out.println("Cannot find user with id: " + uId);
+            return -1;
+        }
+    }
+
+     /* Request 11
+        Request to add a new goal in the list.
+        Expected Input: Goal (Object)
+        Expected Output: Newly created Goal with the details associated to that goal. (String) */
+
+    @Override
+    public Goal createGoal(Goal goal) {
+        Goal.saveGoal(goal);
+        System.out.println("Goal successfully created.");
+        return goal;
+    }
+
+    /* Request 12
+        Request to edit a goal in the list.
+        Expected Input: goalId (Integer) and Goal (Object)
+        Expected Output: Edited Goal with the details associated to that goal. (String) */
+
+    @Override
+    public Goal updateGoal(Goal goal) {
+        int goalId = goal.getGoalId();
+        Goal existing = Goal.getGoalById(goalId);
+        if (existing == null) {
+            System.out.println("Cannot find goal with id: " + goalId);
+        } else {
+            String updatedGoalName = goal.getGoalName();
+            String updatedGoalDescription = goal.getGoalDescription();
+
+            if (updatedGoalName != null) {
+                existing.setGoalName(updatedGoalName);
+            }
+            if (updatedGoalDescription != null) {
+                existing.setGoalDescription(updatedGoalDescription);
+            }
+            Goal.updateGoal(existing);
+        }
+        System.out.println("Successfully updated goal with id: " + goalId);
+        return existing;
+    }
+
+    /* Request 13
+        Request to add a new activity in the list.
+        Expected Input: Activity (Object)
+        Expected Output: Newly created Activity with the details associated to that activity. (String) */
+
+    @Override
+    public Activity createActivity(Activity activity) {
+        Activity.saveActivity(activity);
+        System.out.println("Activity successfully created.");
+        return activity;
+    }
+
+    /* Request 14
+        Request to edit an activity in the list.
+        Expected Input: activityId (Integer) and Activity (Object)
+        Expected Output: Edited activity with the details associated to that activity. (String) */
+
+    @Override
+    public Activity updateActivity(Activity activity) {
+        int activityId = activity.getActivityId();
+        Activity existing = Activity.getActivityById(activityId);
+        if (existing == null) {
+            System.out.println("Cannot find activity with id: " + activityId);
+        } else {
+            String updatedActivityName = activity.getActivityName();
+            String updatedActivityDescription = activity.getActivityDescription();
+
+            if (updatedActivityName != null) {
+                existing.setActivityName(updatedActivityName);
+            }
+            if (updatedActivityDescription != null) {
+                existing.setActivityDescription(updatedActivityDescription);
+            }
+            Activity.updateActivity(existing);
+        }
+        System.out.println("Successfully updated activity with id: " + activityId);
+        return existing;
     }
 }

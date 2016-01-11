@@ -1,5 +1,7 @@
 package data.server.ws;
 
+import data.server.model.Activity;
+import data.server.model.Goal;
 import data.server.model.HealthMeasureHistory;
 import data.server.model.User;
 
@@ -109,5 +111,51 @@ public interface Data {
     @WebMethod(operationName="updateUserMeasure")
     @WebResult(name="measure")
     public HealthMeasureHistory updateUserMeasure(@WebParam(name="uId") int uId, @WebParam(name="measure") HealthMeasureHistory healthMeasureHistory);
+
+    /* Request 10
+        Request to delete measure details about a measure of a user in the list.
+        Expected Input: uId (Integer)
+        hmhId (Integer)
+        Expected Output: Response Message. */
+
+    @WebMethod(operationName="deleteMeasure")
+    @WebResult(name="measure")
+    public int deleteMeasure(@WebParam(name="uId") int uId, @WebParam(name="hmhId") int hmhId);
+
+    /* Request 11
+        Request to add a new goal in the list.
+        Expected Input: Goal (Object)
+        Expected Output: Newly created Goal with the details associated to that goal. (String) */
+
+    @WebMethod(operationName="createGoal")
+    @WebResult(name="goal")
+    public Goal createGoal(@WebParam(name = "goal") Goal goal);
+
+    /* Request 12
+        Request to edit a goal in the list.
+        Expected Input: goalId (Integer) and Goal (Object)
+        Expected Output: Edited Goal with the details associated to that goal. (String) */
+
+    @WebMethod(operationName="updateGoal")
+    @WebResult(name="goal")
+    public Goal updateGoal(@WebParam(name = "goal") Goal goal);
+
+    /* Request 13
+        Request to add a new activity in the list.
+        Expected Input: Activity (Object)
+        Expected Output: Newly created Activity with the details associated to that activity. (String) */
+
+    @WebMethod(operationName="createActivity")
+    @WebResult(name="activity")
+    public Activity createActivity(@WebParam(name = "activity") Activity activity);
+
+    /* Request 14
+        Request to edit an activity in the list.
+        Expected Input: activityId (Integer) and Activity (Object)
+        Expected Output: Edited activity with the details associated to that activity. (String) */
+
+    @WebMethod(operationName="updateActivity")
+    @WebResult(name="activity")
+    public Activity updateActivity(@WebParam(name = "activity") Activity activity);
 
 }

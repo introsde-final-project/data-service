@@ -23,7 +23,7 @@ import java.util.Locale;
 @Table(name="Goal")
 @NamedQuery(name="Goal.findAll", query="SELECT goal FROM Goal goal")
 //@XmlRootElement
-@XmlType(propOrder = { "goalId", "goalDescription" })
+@XmlType(propOrder = { "goalId", "goalName", "goalDescription" })
 @XmlAccessorType(XmlAccessType.FIELD)
 @Cacheable(false)
 public class Goal implements Serializable {
@@ -34,6 +34,8 @@ public class Goal implements Serializable {
 
     @Column(name = "goalId") // Id of Goal
     private int goalId;
+    @Column(name = "goalName") // Name of Goal
+    private String goalName;
     @Column(name = "goalDescription") // Description of Goal
     private String goalDescription;
 
@@ -42,6 +44,9 @@ public class Goal implements Serializable {
     public int getGoalId(){
         return goalId;
     }
+    public String getGoalName(){
+        return goalName;
+    }
     public String getGoalDescription(){
         return goalDescription;
     }
@@ -49,6 +54,9 @@ public class Goal implements Serializable {
     // Setters
     public void setGoalId(int goalId){
         this.goalId = goalId;
+    }
+    public void setGoalName(String goalName){
+        this.goalName = goalName;
     }
     public void setGoalDescription(String goalDescription){
         this.goalDescription = goalDescription;

@@ -18,7 +18,7 @@ import java.util.List;
 @Table(name="Activity")
 @NamedQuery(name="Activity.findAll", query="SELECT activity FROM Activity activity")
 //@XmlRootElement
-@XmlType(propOrder = { "activityId", "activityDescription" })
+@XmlType(propOrder = { "activityId", "activityName", "activityDescription" })
 @XmlAccessorType(XmlAccessType.FIELD)
 @Cacheable(false)
 public class Activity implements Serializable {
@@ -29,6 +29,8 @@ public class Activity implements Serializable {
 
     @Column(name = "activityId") // Id of Activity
     private int activityId;
+    @Column(name = "activityName") // Name of Activity
+    private String activityName;
     @Column(name = "activityDescription") // Description of Activity
     private String activityDescription;
 
@@ -37,6 +39,9 @@ public class Activity implements Serializable {
     public int getActivityId(){
         return activityId;
     }
+    public String getActivityName(){
+        return activityName;
+    }
     public String getActivityDescription(){
         return activityDescription;
     }
@@ -44,6 +49,9 @@ public class Activity implements Serializable {
     // Setters
     public void setActivityId(int activityId){
         this.activityId = activityId;
+    }
+    public void setActivityName(String activityName){
+        this.activityName = activityName;
     }
     public void setActivityDescription(String activityDescription){
         this.activityDescription = activityDescription;
@@ -94,5 +102,4 @@ public class Activity implements Serializable {
         transaction.commit();
         DataServiceDao.instance.closeConnections(entityManager);
     }
-
 }
