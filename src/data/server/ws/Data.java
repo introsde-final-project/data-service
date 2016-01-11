@@ -123,6 +123,33 @@ public interface Data {
     public int deleteMeasure(@WebParam(name="uId") int uId, @WebParam(name="hmhId") int hmhId);
 
     /* Request 11
+        Request to obtain all the goals and their details in the list.
+        Expected Input: -
+        Expected Output: List of users (String) */
+
+    @WebMethod(operationName="readGoalList")
+    @WebResult(name="goal")
+    public List<Goal> readGoalList();
+
+    /* Request 12
+       Request to obtain a goal and the details associated to that goal from the list.
+       Expected Input: goalId (Integer)
+       Expected Output: Goal and the details associated to that goal. (String) */
+
+    @WebMethod(operationName="readGoal")
+    @WebResult(name="goal")
+    public Goal readGoal(@WebParam(name="goalId") int goalId);
+
+    /* Request 13
+       Request to obtain a goal and the details associated to that goal from the list by goalName.
+       Expected Input: goalName (String)
+       Expected Output: Goal and the details associated to that goal. (String) */
+
+    @WebMethod(operationName="readGoalByName")
+    @WebResult(name="goal")
+    public Goal readGoalByName(@WebParam(name="goalName") String goalName);
+
+    /* Request 14
         Request to add a new goal in the list.
         Expected Input: Goal (Object)
         Expected Output: Newly created Goal with the details associated to that goal. (String) */
@@ -131,7 +158,7 @@ public interface Data {
     @WebResult(name="goal")
     public Goal createGoal(@WebParam(name = "goal") Goal goal);
 
-    /* Request 12
+    /* Request 15
         Request to edit a goal in the list.
         Expected Input: goalId (Integer) and Goal (Object)
         Expected Output: Edited Goal with the details associated to that goal. (String) */
@@ -140,7 +167,43 @@ public interface Data {
     @WebResult(name="goal")
     public Goal updateGoal(@WebParam(name = "goal") Goal goal);
 
-    /* Request 13
+     /* Request 16
+        Request to delete a goal from the list.
+        Expected Input: goalId (Integer)
+        Expected Output: Response Message. */
+
+    @WebMethod(operationName="deleteGoal")
+    @WebResult(name="goal")
+    public int deleteGoal(@WebParam(name="goalId") int goalId);
+
+    /* Request 17
+        Request to obtain all the activities and their details in the list.
+        Expected Input: -
+        Expected Output: List of activities (String) */
+
+    @WebMethod(operationName="readActivityList")
+    @WebResult(name="activity")
+    public List<Activity> readActivityList();
+
+    /* Request 18
+       Request to obtain an activity and the details associated to that activity from the list.
+       Expected Input: activityId (Integer)
+       Expected Output: Activity and the details associated to that activity. (String) */
+
+    @WebMethod(operationName="readActivity")
+    @WebResult(name="activity")
+    public Activity readActivity(@WebParam(name = "activityId") int activityId);
+
+    /* Request 19
+       Request to obtain an activity and the details associated to that activity from the list by activityName.
+       Expected Input: activityName (String)
+       Expected Output: Activity and the details associated to that activity. (String) */
+
+    @WebMethod(operationName="readActivityByName")
+    @WebResult(name="activity")
+    public Activity readActivityByName(@WebParam(name = "activityName") String activityName);
+
+    /* Request 20
         Request to add a new activity in the list.
         Expected Input: Activity (Object)
         Expected Output: Newly created Activity with the details associated to that activity. (String) */
@@ -149,7 +212,7 @@ public interface Data {
     @WebResult(name="activity")
     public Activity createActivity(@WebParam(name = "activity") Activity activity);
 
-    /* Request 14
+    /* Request 21
         Request to edit an activity in the list.
         Expected Input: activityId (Integer) and Activity (Object)
         Expected Output: Edited activity with the details associated to that activity. (String) */
@@ -158,4 +221,11 @@ public interface Data {
     @WebResult(name="activity")
     public Activity updateActivity(@WebParam(name = "activity") Activity activity);
 
+     /* Request 22
+        Request to delete an activity from the list.
+        Expected Input: activityId (Integer)
+        Expected Output: Response Message. */
+     @WebMethod(operationName="deleteActivity")
+     @WebResult(name="activity")
+     public int deleteActivity(@WebParam(name="activityId") int activityId);
 }

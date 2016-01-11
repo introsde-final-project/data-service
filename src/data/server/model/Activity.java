@@ -16,7 +16,10 @@ import java.util.List;
 
 @Entity  // Indicates that this class is an entity to persist in DB
 @Table(name="Activity")
-@NamedQuery(name="Activity.findAll", query="SELECT activity FROM Activity activity")
+@NamedQueries({
+        @NamedQuery(name="Activity.findAll", query="SELECT activity FROM Activity activity"),
+        @NamedQuery(name="Activity.getActivityByName", query="SELECT activity FROM Activity activity WHERE activity.activityName = :activityName")
+})
 //@XmlRootElement
 @XmlType(propOrder = { "activityId", "activityName", "activityDescription" })
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -62,6 +65,13 @@ public class Activity implements Serializable {
     public static Activity getActivityById(int activityId) {
         EntityManager entityManager = DataServiceDao.instance.createEntityManager();
         Activity activity = entityManager.find(Activity.class, activityId);
+        DataServiceDao.instance.closeConnections(entityManager);
+        return activity;
+    }
+
+    public static Activity getActivityByName(String activityName) {
+        EntityManager entityManager = DataServiceDao.instance.createEntityManager();
+        Activity activity = entityManager.createNamedQuery("Activity.getActivityByName", Activity.class).setParameter("activityName", activityName).getSingleResult();
         DataServiceDao.instance.closeConnections(entityManager);
         return activity;
     }

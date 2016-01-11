@@ -3,6 +3,7 @@ package data.server.ws;
 import data.server.model.*;
 
 import javax.jws.WebService;
+import javax.persistence.NoResultException;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -163,9 +164,7 @@ public class DataImplementation implements Data {
         }
         else {
             List<HealthProfile> healthProfiles = user.getMeasureType();
-            System.out.println(healthProfiles.size());
             if (healthProfiles.size() == 0) {
-                System.out.println("*****************************************");
                 HealthProfile healthProfile = new HealthProfile();
                 healthProfile.setMeasureType(healthMeasureHistory.getMeasureType());
                 healthProfile.setMeasureValue(healthMeasureHistory.getMeasureValue());
@@ -175,7 +174,6 @@ public class DataImplementation implements Data {
                 HealthProfile.saveHealthProfile(healthProfile);
             }
             else {
-                System.out.println("#############################################");
                 for (HealthProfile healthProfile : healthProfiles) {
                     if (healthProfile.getMeasureType().equalsIgnoreCase(healthMeasureHistory.getMeasureType())) {
                         healthProfile.setMeasureValue(healthMeasureHistory.getMeasureValue());
@@ -269,7 +267,53 @@ public class DataImplementation implements Data {
         }
     }
 
-     /* Request 11
+    /* Request 11
+        Request to obtain all the goals and their details in the list.
+        Expected Input: -
+        Expected Output: List of goals (String) */
+
+    @Override
+    public List<Goal> readGoalList() {
+        System.out.println("Reading the list of Goal");
+        return Goal.getAll();
+    }
+
+    /* Request 12
+       Request to obtain a goal and the details associated to that goal from the list.
+       Expected Input: goalId (Integer)
+       Expected Output: Goal and the details associated to that goal. (String) */
+
+    @Override
+    public Goal readGoal(int goalId) {
+        System.out.println("Reading Goal with id: " + goalId);
+        Goal goal = Goal.getGoalById(goalId);
+        if (goal!=null) {
+            System.out.println("Successfully found Goal with id: " + goalId);
+            return goal;
+        } else {
+            System.out.println("Unable to find any Goal with id: " + goalId);
+            return null;
+        }
+    }
+
+    /* Request 13
+       Request to obtain a goal and the details associated to that goal from the list by goalName.
+       Expected Input: goalName (String)
+       Expected Output: Goal and the details associated to that goal. (String) */
+
+    @Override
+    public Goal readGoalByName(String goalName) {
+        System.out.println("Reading Goal with name: " + goalName);
+        try {
+            Goal goal = Goal.getGoalByName(goalName);
+            return goal;
+        }
+        catch (NoResultException e) {
+            return null;
+        }
+    }
+
+     /* Request 14
         Request to add a new goal in the list.
         Expected Input: Goal (Object)
         Expected Output: Newly created Goal with the details associated to that goal. (String) */
@@ -281,7 +325,7 @@ public class DataImplementation implements Data {
         return goal;
     }
 
-    /* Request 12
+    /* Request 15
         Request to edit a goal in the list.
         Expected Input: goalId (Integer) and Goal (Object)
         Expected Output: Edited Goal with the details associated to that goal. (String) */
@@ -308,7 +352,71 @@ public class DataImplementation implements Data {
         return existing;
     }
 
-    /* Request 13
+    /* Request 16
+        Request to delete a goal from the list.
+        Expected Input: goalId (Integer)
+        Expected Output: Response Message. */
+
+    @Override
+    public int deleteGoal(int goalId) {
+        Goal goal = Goal.getGoalById(goalId);
+        if (goal!=null) {
+            Goal.removeGoal(goal);
+            System.out.println("Successfully deleted Goal with id: " + goalId );
+            return 0;
+        } else {
+            System.out.println("Cannot find user with id: " + goalId);
+            return -1;
+        }
+    }
+
+    /* Request 17
+        Request to obtain all the activities and their details in the list.
+        Expected Input: -
+        Expected Output: List of activities (String) */
+
+    @Override
+    public List<Activity> readActivityList() {
+        System.out.println("Reading the list of Activities");
+        return Activity.getAll();
+    }
+
+    /* Request 18
+       Request to obtain an activity and the details associated to that activity from the list.
+       Expected Input: activityId (Integer)
+       Expected Output: Activity and the details associated to that activity. (String) */
+
+    @Override
+    public Activity readActivity(int activityId) {
+        System.out.println("Reading Activity with id: " + activityId);
+        Activity activity = Activity.getActivityById(activityId);
+        if (activity!=null) {
+            System.out.println("Successfully found Activity with id: " + activityId);
+            return activity;
+        } else {
+            System.out.println("Unable to find any Activity with id: " + activityId);
+            return null;
+        }
+    }
+
+    /* Request 19
+       Request to obtain an activity and the details associated to that activity from the list by activityName.
+       Expected Input: activityName (String)
+       Expected Output: Activity and the details associated to that activity. (String) */
+
+    @Override
+    public Activity readActivityByName(String activityName) {
+        System.out.println("Reading Activity with name: " + activityName);
+        try {
+            Activity activity = Activity.getActivityByName(activityName);
+            return activity;
+        }
+        catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    /* Request 20
         Request to add a new activity in the list.
         Expected Input: Activity (Object)
         Expected Output: Newly created Activity with the details associated to that activity. (String) */
@@ -320,7 +428,7 @@ public class DataImplementation implements Data {
         return activity;
     }
 
-    /* Request 14
+    /* Request 21
         Request to edit an activity in the list.
         Expected Input: activityId (Integer) and Activity (Object)
         Expected Output: Edited activity with the details associated to that activity. (String) */
@@ -345,5 +453,23 @@ public class DataImplementation implements Data {
         }
         System.out.println("Successfully updated activity with id: " + activityId);
         return existing;
+    }
+
+     /* Request 22
+        Request to delete an activity from the list.
+        Expected Input: activityId (Integer)
+        Expected Output: Response Message. */
+
+    @Override
+    public int deleteActivity(int activityId) {
+        Activity activity = Activity.getActivityById(activityId);
+        if (activity!=null) {
+            Activity.removeActivity(activity);
+            System.out.println("Successfully deleted Goal with id: " + activityId );
+            return 0;
+        } else {
+            System.out.println("Cannot find user with id: " + activityId);
+            return -1;
+        }
     }
 }

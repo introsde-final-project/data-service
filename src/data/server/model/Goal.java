@@ -21,7 +21,10 @@ import java.util.Locale;
 
 @Entity  // Indicates that this class is an entity to persist in DB
 @Table(name="Goal")
-@NamedQuery(name="Goal.findAll", query="SELECT goal FROM Goal goal")
+@NamedQueries({
+    @NamedQuery(name="Goal.findAll", query="SELECT goal FROM Goal goal"),
+    @NamedQuery(name="Goal.getGoalByName", query="SELECT goal FROM Goal goal WHERE goal.goalName = :goalName")
+})
 //@XmlRootElement
 @XmlType(propOrder = { "goalId", "goalName", "goalDescription" })
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -68,6 +71,13 @@ public class Goal implements Serializable {
     public static Goal getGoalById(int goalId) {
         EntityManager entityManager = DataServiceDao.instance.createEntityManager();
         Goal goal = entityManager.find(Goal.class, goalId);
+        DataServiceDao.instance.closeConnections(entityManager);
+        return goal;
+    }
+
+    public static Goal getGoalByName(String goalName) {
+        EntityManager entityManager = DataServiceDao.instance.createEntityManager();
+        Goal goal = entityManager.createNamedQuery("Goal.getGoalByName", Goal.class).setParameter("goalName", goalName).getSingleResult();
         DataServiceDao.instance.closeConnections(entityManager);
         return goal;
     }
