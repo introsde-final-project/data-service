@@ -4,7 +4,6 @@ import data.server.model.*;
 
 import javax.jws.WebService;
 import javax.persistence.NoResultException;
-import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -85,13 +84,13 @@ public class DataImplementation implements Data {
             if (updatedAddress != null) {
                 existing.setAddress(updatedAddress);
             }
-            if (user.getBirthDate() != null) {
+            /*if (user.getBirthDate() != null) {
                 try {
                     existing.setBirthDate(user.getBirthDate());
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-            }
+            }*/
             User.updateUser(existing);
         }
         System.out.println("Successfully updated personal information of user with id: " + uId);
@@ -157,7 +156,6 @@ public class DataImplementation implements Data {
     public HealthMeasureHistory saveUserMeasure(int uId, HealthMeasureHistory healthMeasureHistory) {
         System.out.println("Creating new Health Measure History...");
         User user = User.getUserById(uId);
-
         if (user == null) {
             System.out.println("Unable to find the user with id: " + uId);
             return null;
@@ -202,6 +200,8 @@ public class DataImplementation implements Data {
 
     @Override
     public HealthMeasureHistory updateUserMeasure(int uId, HealthMeasureHistory healthMeasureHistory) {
+        System.out.println(uId);
+        System.out.println(healthMeasureHistory.getMeasureType());
         User existingUser = User.getUserById(uId);
         HealthMeasureHistory existingHistory = HealthMeasureHistory.getHealthMeasureHistoryById(healthMeasureHistory.getHmhId());
         List<HealthProfile> healthProfiles = existingUser.getMeasureType();
@@ -222,18 +222,13 @@ public class DataImplementation implements Data {
             if (updatedMeasureValueType != null) {
                 existingHistory.setMeasureValueType(updatedMeasureValueType);
             }
-            if (updatedDateRegistered != null) {
-                existingHistory.setDateRegistered(updatedDateRegistered);
-            }
 
             for (HealthProfile healthProfile: healthProfiles) {
                 if (healthProfile.getMeasureType().equalsIgnoreCase(healthMeasureHistory.getMeasureType())) {
-                    if (healthProfile.getDateRegistered().before(healthMeasureHistory.getDateRegistered())) {
-                        healthProfile.setMeasureValue(healthMeasureHistory.getMeasureValue());
-                        healthProfile.setMeasureValueType(healthMeasureHistory.getMeasureValueType());
-                        healthProfile.setDateRegistered(new Date());
-                        HealthProfile.updateHealthProfile(healthProfile);
-                    }
+                   healthProfile.setMeasureValue(healthMeasureHistory.getMeasureValue());
+                   healthProfile.setMeasureValueType(healthMeasureHistory.getMeasureValueType());
+                   healthProfile.setDateRegistered(new Date());
+                   HealthProfile.updateHealthProfile(healthProfile);
                 }
             }
         }
