@@ -77,10 +77,10 @@ public class User implements Serializable {
     public String getLastName(){
         return lastName;
     }
-    public String getBirthDate(){
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+    public Date getBirthDate(){
+        //DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         // Get the date today using Calendar object.
-        return df.format(birthDate);
+        return birthDate;
     }
     public String getBloodGroup() { return bloodGroup; }
     public String getAddress() { return address; }
@@ -95,10 +95,10 @@ public class User implements Serializable {
     public void setLastName(String lastName){
         this.lastName = lastName;
     }
-    public void setBirthDate(String birthDate) throws ParseException {
-        DateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
-        Date date = format.parse(birthDate);
-        this.birthDate = date;
+    public void setBirthDate(Date birthDate) {
+       // DateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+       // Date date = format.parse(birthDate);
+        this.birthDate = birthDate;
     }
     public void setBloodGroup(String bloodGroup) { this.bloodGroup = bloodGroup; }
     public void setAddress(String address) { this.address = address; }

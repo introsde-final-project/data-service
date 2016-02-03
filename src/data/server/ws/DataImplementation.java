@@ -70,6 +70,7 @@ public class DataImplementation implements Data {
             String updatedFirstName = user.getFirstName();
             String updatedLastName = user.getLastName();
             String updatedBloodGroup = user.getBloodGroup();
+            Date updatedBirthDate = user.getBirthDate();
             String updatedAddress = user.getAddress();
 
             if (updatedFirstName != null) {
@@ -84,13 +85,9 @@ public class DataImplementation implements Data {
             if (updatedAddress != null) {
                 existing.setAddress(updatedAddress);
             }
-            /*if (user.getBirthDate() != null) {
-                try {
-                    existing.setBirthDate(user.getBirthDate());
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }*/
+            if (updatedBirthDate != null) {
+                existing.setBirthDate(updatedBirthDate);
+            }
             User.updateUser(existing);
         }
         System.out.println("Successfully updated personal information of user with id: " + uId);
