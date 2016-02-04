@@ -125,7 +125,7 @@ public interface Data {
     /* Request 11
         Request to obtain all the goals and their details in the list.
         Expected Input: -
-        Expected Output: List of users (String) */
+        Expected Output: List of goals (String) */
 
     @WebMethod(operationName="readGoalList")
     @WebResult(name="goal")
