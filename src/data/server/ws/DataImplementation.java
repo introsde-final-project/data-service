@@ -17,7 +17,7 @@ public class DataImplementation implements Data {
     /* Request 1
         Request to obtain all the users and their details in the list.
         Expected Input: -
-        Expected Output: List of users (String) */
+        Expected Output: List of users (List) */
 
     @Override
     public List<User> readUserList() {
@@ -28,7 +28,7 @@ public class DataImplementation implements Data {
     /* Request 2
        Request to obtain a user and the details associated to that user from the list.
        Expected Input: uId (Integer)
-       Expected Output: User and the details associated to that user. (String) */
+       Expected Output: User and the details associated to that user. (Object) */
 
     @Override
     public User readUser(int uId) {
@@ -46,7 +46,7 @@ public class DataImplementation implements Data {
     /* Request 3
         Request to add a new user in the list.
         Expected Input: User (Object)
-        Expected Output: Newly created User with the details associated to that user. (String) */
+        Expected Output: Newly created User with the details associated to that user. (Object) */
 
     @Override
     public User createUser(User user) {
@@ -58,7 +58,7 @@ public class DataImplementation implements Data {
     /* Request 4
         Request to edit a user in the list.
         Expected Input: uId (Integer) and User (Object)
-        Expected Output: Edited User with the details associated to that user. (String) */
+        Expected Output: Edited User with the details associated to that user. (Object) */
 
     @Override
     public User updateUser(User user) {
@@ -112,7 +112,7 @@ public class DataImplementation implements Data {
      /* Request 5
         Request to delete a user from the list.
         Expected Input: uId (Integer)
-        Expected Output: Response Message. */
+        Expected Output: Response */
 
     @Override
     public int deleteUser(int uId) {
@@ -131,7 +131,7 @@ public class DataImplementation implements Data {
        Request to obtain all measure details about a measure of a user in the list.
        Expected Input: uId (Integer)
                        measureType (String)
-       Expected Output: List of details of measure types. (String) */
+       Expected Output: List of details of measure types. (List) */
 
     @Override
     public List<HealthMeasureHistory> readUserHistory(int uId, String measureType) {
@@ -146,7 +146,7 @@ public class DataImplementation implements Data {
         Expected Input: uId (Integer)
                         measureType (String)
                         hmhId (Integer)
-        Expected Output: Details of a particular measure. (String) */
+        Expected Output: Details of a particular measure. (List) */
 
     @Override
     public List<HealthMeasureHistory> readUserMeasure(int uId, String measureType, int hmhId) {
@@ -162,7 +162,7 @@ public class DataImplementation implements Data {
         measureType (String)
         MeasureDetails (Object)
         Expected Output:
-        List of newly created measure. (String) */
+        List of newly created measure. (Object) */
 
     @Override
     public HealthMeasureHistory saveUserMeasure(int uId, HealthMeasureHistory healthMeasureHistory) {
@@ -208,7 +208,7 @@ public class DataImplementation implements Data {
         hmhId (Integer)
         MeasureDetails (Object)
         Expected Output:
-        List of updated measure. (String) */
+        List of updated measure. (Object) */
 
     @Override
     public HealthMeasureHistory updateUserMeasure(int uId, HealthMeasureHistory healthMeasureHistory) {
@@ -251,7 +251,7 @@ public class DataImplementation implements Data {
         Request to delete measure details about a measure of a user in the list.
         Expected Input: uId (Integer)
         hmhId (Integer)
-        Expected Output: Response Message. */
+        Expected Output: Response */
 
     @Override
     public int deleteMeasure(int uId, int hmhId) {
@@ -277,7 +277,7 @@ public class DataImplementation implements Data {
     /* Request 11
         Request to obtain all the goals and their details in the list.
         Expected Input: -
-        Expected Output: List of goals (String) */
+        Expected Output: List of goals (List) */
 
     @Override
     public List<Goal> readGoalList() {
@@ -288,7 +288,7 @@ public class DataImplementation implements Data {
     /* Request 12
        Request to obtain a goal and the details associated to that goal from the list.
        Expected Input: goalId (Integer)
-       Expected Output: Goal and the details associated to that goal. (String) */
+       Expected Output: Goal and the details associated to that goal. (Object) */
 
     @Override
     public Goal readGoal(int goalId) {
@@ -306,7 +306,7 @@ public class DataImplementation implements Data {
     /* Request 13
        Request to obtain a goal and the details associated to that goal from the list by goalName.
        Expected Input: goalName (String)
-       Expected Output: Goal and the details associated to that goal. (String) */
+       Expected Output: Goal and the details associated to that goal. (Object) */
 
     @Override
     public Goal readGoalByName(String goalName) {
@@ -323,7 +323,7 @@ public class DataImplementation implements Data {
      /* Request 14
         Request to add a new goal in the list.
         Expected Input: Goal (Object)
-        Expected Output: Newly created Goal with the details associated to that goal. (String) */
+        Expected Output: Newly created Goal with the details associated to that goal. (Object) */
 
     @Override
     public Goal createGoal(Goal goal) {
@@ -335,7 +335,7 @@ public class DataImplementation implements Data {
     /* Request 15
         Request to edit a goal in the list.
         Expected Input: goalId (Integer) and Goal (Object)
-        Expected Output: Edited Goal with the details associated to that goal. (String) */
+        Expected Output: Edited Goal with the details associated to that goal. (Object) */
 
     @Override
     public Goal updateGoal(Goal goal) {
@@ -362,7 +362,7 @@ public class DataImplementation implements Data {
     /* Request 16
         Request to delete a goal from the list.
         Expected Input: goalId (Integer)
-        Expected Output: Response Message. */
+        Expected Output: Response */
 
     @Override
     public int deleteGoal(int goalId) {
@@ -380,7 +380,7 @@ public class DataImplementation implements Data {
     /* Request 17
         Request to obtain all the activities and their details in the list.
         Expected Input: -
-        Expected Output: List of activities (String) */
+        Expected Output: List of activities (List) */
 
     @Override
     public List<Activity> readActivityList() {
@@ -391,7 +391,7 @@ public class DataImplementation implements Data {
     /* Request 18
        Request to obtain an activity and the details associated to that activity from the list.
        Expected Input: activityId (Integer)
-       Expected Output: Activity and the details associated to that activity. (String) */
+       Expected Output: Activity and the details associated to that activity. (Object) */
 
     @Override
     public Activity readActivity(int activityId) {
@@ -409,7 +409,7 @@ public class DataImplementation implements Data {
     /* Request 19
        Request to obtain an activity and the details associated to that activity from the list by activityName.
        Expected Input: activityName (String)
-       Expected Output: Activity and the details associated to that activity. (String) */
+       Expected Output: Activity and the details associated to that activity. (Object) */
 
     @Override
     public Activity readActivityByName(String activityName) {
@@ -426,7 +426,7 @@ public class DataImplementation implements Data {
     /* Request 20
         Request to add a new activity in the list.
         Expected Input: Activity (Object)
-        Expected Output: Newly created Activity with the details associated to that activity. (String) */
+        Expected Output: Newly created Activity with the details associated to that activity. (Object) */
 
     @Override
     public Activity createActivity(Activity activity) {
@@ -438,7 +438,7 @@ public class DataImplementation implements Data {
     /* Request 21
         Request to edit an activity in the list.
         Expected Input: activityId (Integer) and Activity (Object)
-        Expected Output: Edited activity with the details associated to that activity. (String) */
+        Expected Output: Edited activity with the details associated to that activity. (Object) */
 
     @Override
     public Activity updateActivity(Activity activity) {
@@ -465,7 +465,7 @@ public class DataImplementation implements Data {
      /* Request 22
         Request to delete an activity from the list.
         Expected Input: activityId (Integer)
-        Expected Output: Response Message. */
+        Expected Output: Response */
 
     @Override
     public int deleteActivity(int activityId) {
