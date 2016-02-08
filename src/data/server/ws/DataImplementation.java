@@ -73,20 +73,35 @@ public class DataImplementation implements Data {
             Date updatedBirthDate = user.getBirthDate();
             String updatedAddress = user.getAddress();
 
-            if (updatedFirstName != null) {
+            if (!updatedFirstName.isEmpty()) {
                 existing.setFirstName(updatedFirstName);
             }
-            if (updatedLastName != null) {
+            else if(updatedFirstName.isEmpty()) {
+                existing.setFirstName(existing.getFirstName());
+            }
+            if (!updatedLastName.isEmpty()) {
                 existing.setLastName(updatedLastName);
             }
-            if (updatedBloodGroup != null) {
+            else if (updatedLastName.isEmpty()) {
+                existing.setLastName(existing.getLastName());
+            }
+            if (!updatedBloodGroup.isEmpty()) {
                 existing.setBloodGroup(updatedBloodGroup);
             }
-            if (updatedAddress != null) {
+            else if(updatedBloodGroup.isEmpty()){
+                existing.setBloodGroup(existing.getBloodGroup());
+            }
+            if (!updatedAddress.isEmpty()) {
                 existing.setAddress(updatedAddress);
+            }
+            else if(updatedAddress.isEmpty()){
+                existing.setAddress(existing.getAddress());
             }
             if (updatedBirthDate != null) {
                 existing.setBirthDate(updatedBirthDate);
+            }
+            else if(updatedBirthDate == null){
+                existing.setBirthDate(existing.getBirthDate());
             }
             User.updateUser(existing);
         }
